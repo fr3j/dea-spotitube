@@ -1,43 +1,46 @@
 package dea.spotitube.controllers;
 
-import jakarta.ws.rs.core.Response;
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
 import nl.frej.dea.spotitube.controllers.Login;
 import nl.frej.dea.spotitube.services.UserService;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
-import nl.frej.dea.spotitube.services.dto.LoginResponseDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import jakarta.ws.rs.core.Response;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+    public class LoginTest {
 
-class LoginTest {
+        private UserService mockUserService;
+        private Login loginController;
 
-    private Login login;
-    private UserService mockUserService;
+        @Before
+        public void setUp() {
+            mockUserService = mock(UserService.class);
+            loginController = new Login(mockUserService);
+        }
 
-//    @BeforeEach
-//    void setUp() {
-//        mockUserService = mock(UserService.class);
-//        login = new Login();
-//        login.setUserService(mockUserService);
-    //}
-//    @Test
-//    void loginReturnsValidTokenAndUsername() {
-//        UserDTO dummyUser = new UserDTO("testUser", "testPassword");
-//        when(mockUserService.login(dummyUser)).thenReturn("testToken"); // Mocking behavior
-//
-//        Response response = login.login(dummyUser);
-//
-//        assertEquals("testUser", response.getUsername());
-//        assertEquals("testToken", response.getToken());
-//    }
+        @Test
+        public void testLoginSuccess() {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUser("testUser");
+            when(mockUserService.login(userDTO)).thenReturn("testToken");
 
-    @Test
-    void loginThrowsExceptionWhenNoToken() {
-        UserDTO dummyUser = new UserDTO("testUser", "testPassword");
-        when(mockUserService.login(dummyUser)).thenReturn(null); // Mocking behavior
+            Response response = loginController.login(userDTO);
 
-        assertThrows(RuntimeException.class, () -> login.login(dummyUser));
+            assertEquals(200, response.getStatus());
+        }
+
+        @Test
+        public void testLoginFailure() {
+            UserDTO userDTO = new UserDTO();
+            when(mockUserService.login(userDTO)).thenReturn(null);
+
+            Response response = loginController.login(userDTO);
+
+            assertEquals(400, response.getStatus());
+        }
     }
-}
+
+

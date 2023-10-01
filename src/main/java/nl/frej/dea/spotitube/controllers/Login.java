@@ -12,11 +12,14 @@ import nl.frej.dea.spotitube.services.dto.LoginResponseDTO;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 @Path("/login")
 public class Login {
-    public UserService userService = new UserService();
-//    @Inject
-//    public void setUserService(UserService userService){
-//        this.userService = userService;
-//    }
+    private UserService userService;
+
+    // No-argument constructor required by JAX-RS
+    public Login() { }
+    @Inject
+    public Login(UserService userService) {
+        this.userService = userService;
+    }
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

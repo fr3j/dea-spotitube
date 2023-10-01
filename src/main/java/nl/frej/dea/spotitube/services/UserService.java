@@ -1,11 +1,13 @@
 package nl.frej.dea.spotitube.services;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
+@ApplicationScoped
 public class UserService {
     private List<UserDTO> users = new ArrayList<>();
 
