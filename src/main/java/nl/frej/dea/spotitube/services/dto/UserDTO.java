@@ -1,22 +1,25 @@
 package nl.frej.dea.spotitube.services.dto;
 
 public class UserDTO {
-    private String username;
+    private String user;
     private String password;
 
-
-
-    public UserDTO(String username, String password){
-        this.username = username;
+    public UserDTO(String user, String password){
+        this.user = user;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public UserDTO(){
+        this.user = null;
+        this.password = null;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getPassword() {

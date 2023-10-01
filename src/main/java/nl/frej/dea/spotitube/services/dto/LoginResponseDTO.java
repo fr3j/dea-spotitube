@@ -5,13 +5,22 @@ public class LoginResponseDTO {
     private String token;
     private String user;
 
-    public LoginResponseDTO(String token, String user){
-        this.token = token;
+//    public LoginResponseDTO(String token, String user){
+//        this.token = token;
+//        this.user = user;
+//    }
+
+
+    public String getUser(){
+        return this.user;
+    }
+
+    public void setUser(String user){
         this.user = user;
     }
 
-    public String getUsername(){
-        return this.user;
+    public void setToken(String token){
+        this.token = token;
     }
 
     public String getToken(){

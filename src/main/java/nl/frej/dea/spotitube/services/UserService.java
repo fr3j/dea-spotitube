@@ -38,7 +38,7 @@ public class UserService {
 
     private boolean checkCredentials(UserDTO userDTO) {
         for (UserDTO storedUser : users) {
-            if (storedUser.getUsername().equals(userDTO.getUsername()) &&
+            if (storedUser.getUser().equals(userDTO.getUser()) &&
                     storedUser.getPassword().equals(userDTO.getPassword())) {
                 return true;
             }
