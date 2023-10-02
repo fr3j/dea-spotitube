@@ -1,17 +1,17 @@
 package nl.frej.dea.spotitube.services.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PlaylistResponseDTO {
-    private ArrayList<PlaylistDTO> playlists;
+    private List<PlaylistDTO> playlists;
     private Integer length;
-    public void setPlaylists(ArrayList<PlaylistDTO> playlists) {
+    public void setPlaylists(List<PlaylistDTO> playlists) {
         this.playlists = playlists;
     }
     public void setLength(Integer length) {
         this.length = length;
     }
-    public ArrayList<PlaylistDTO> getPlaylists() {
+    public List<PlaylistDTO> getPlaylists() {
         return playlists;
     }
     public Integer getLength() {

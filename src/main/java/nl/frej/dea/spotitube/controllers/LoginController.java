@@ -11,13 +11,12 @@ import nl.frej.dea.spotitube.services.UserService;
 import nl.frej.dea.spotitube.services.dto.LoginResponseDTO;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 @Path("/login")
-public class Login {
+public class LoginController {
     private UserService userService;
 
-    // No-argument constructor required by JAX-RS
-    public Login() { }
+    public LoginController() { }
     @Inject
-    public Login(UserService userService) {
+    public LoginController(UserService userService) {
         this.userService = userService;
     }
     @POST
@@ -27,7 +26,6 @@ public class Login {
         String token = userService.login(userDTO);
         if (token == null){
             return Response.status(400).build();
-//            throw new RuntimeException("Authentication failed");
         }
         else {
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO();

@@ -3,22 +3,22 @@ package dea.spotitube.controllers;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-import nl.frej.dea.spotitube.controllers.Login;
+import nl.frej.dea.spotitube.controllers.LoginController;
 import nl.frej.dea.spotitube.services.UserService;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 import org.junit.Before;
 import org.junit.Test;
 import jakarta.ws.rs.core.Response;
 
-    public class LoginTest {
+    public class LoginControllerTest {
 
         private UserService mockUserService;
-        private Login loginController;
+        private LoginController loginController;
 
         @Before
         public void setUp() {
             mockUserService = mock(UserService.class);
-            loginController = new Login(mockUserService);
+            loginController = new LoginController(mockUserService);
         }
 
         @Test

@@ -1,6 +1,7 @@
 package nl.frej.dea.spotitube.services.dto;
 
 public class UserDTO {
+    private int id;
     private String user;
     private String password;
 
@@ -12,6 +13,14 @@ public class UserDTO {
     public UserDTO(){
         this.user = null;
         this.password = null;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUser() {

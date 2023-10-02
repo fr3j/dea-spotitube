@@ -1,18 +1,23 @@
 package nl.frej.dea.spotitube.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import nl.frej.dea.spotitube.dao.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class UserService {
-    private List<UserDTO> users = new ArrayList<>();
+    private UserDaoInterface dao;
+    @Inject
+    public UserService(UserDaoInterface dao) {
+        this.dao = dao;
+    }
 
     public UserService(){
-        users.add(new UserDTO("frej", "papzak"));
+        ;
     }
 
     public String login(UserDTO userDTO) {
@@ -29,7 +34,7 @@ public class UserService {
 
         for (int i = 0; i < TOKEN_SEGMENTS; i++) {
             for (int j = 0; j < TOKEN_SEGMENT_LENGTH; j++) {
-                token.append(secureRandom.nextInt(10)); // Generate a random digit [0-9]
+                token.append(secureRandom.nextInt(10));
             }
             if (i < TOKEN_SEGMENTS - 1) {
                 token.append('-');
@@ -39,12 +44,12 @@ public class UserService {
     }
 
     private boolean checkCredentials(UserDTO userDTO) {
-        for (UserDTO storedUser : users) {
-            if (storedUser.getUser().equals(userDTO.getUser()) &&
-                    storedUser.getPassword().equals(userDTO.getPassword())) {
-                return true;
-            }
+        Optional<UserDTO> storedUserOpt = dao.getByUsername(userDTO.getUser());
+        if (storedUserOpt.isPresent()){
+            UserDTO storedUser = storedUserOpt.get();
+            return storedUser.getPassword().equals(userDTO.getPassword());
         }
         return false;
     }
+
 }
