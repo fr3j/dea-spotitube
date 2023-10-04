@@ -9,14 +9,16 @@ import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+
 @ApplicationScoped
 
-public class UserDAO implements UserDaoInterface {
+public class UserDao implements UserDaoInterface {
 
     private Logger logger = Logger.getLogger(getClass().getName());
     @Inject
 
     private DatabaseProperties databaseProperties;
+
     @Override
     public Optional<UserDTO> get(long id) {
         UserDTO user = null;
@@ -45,7 +47,7 @@ public class UserDAO implements UserDaoInterface {
         return Optional.ofNullable(user);
     }
 
-@Override
+    @Override
     public List<UserDTO> findAll() {
         return null;
     }
@@ -64,6 +66,7 @@ public class UserDAO implements UserDaoInterface {
     public void delete(UserDTO userDTO) {
 
     }
+
     @Override
     public Optional<UserDTO> getByUsername(String username) {
         UserDTO user = null;
@@ -88,6 +91,48 @@ public class UserDAO implements UserDaoInterface {
         }
 
         return Optional.ofNullable(user);
+    }
+
+
+    public Optional<UserDTO> getByToken(String token) {
+        UserDTO user = null;
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("SELECT * from User WHERE token = ?");
+            statement.setString(1, token);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = new UserDTO();
+                user.setId(resultSet.getInt("id"));
+                user.setUser(resultSet.getString("user"));
+                user.setPassword(resultSet.getString("password"));
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public void saveTokenToDatabase(String token, String username) {
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO user_tokens (token, user) VALUES (?, ?)");
+            statement.setString(1, token);
+            statement.setString(2, username);
+            statement.execute();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            // Handle exception
+        }
+
     }
 
 }

@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.Response;
 import nl.frej.dea.spotitube.services.UserService;
 import nl.frej.dea.spotitube.services.dto.LoginResponseDTO;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
+
 @Path("/login")
 public class LoginController {
     private UserService userService;
@@ -28,6 +29,7 @@ public class LoginController {
             return Response.status(400).build();
         }
         else {
+
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
             loginResponseDTO.setToken(token);
             loginResponseDTO.setUser(userDTO.getUser());

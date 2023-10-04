@@ -12,9 +12,9 @@ import nl.frej.dea.spotitube.services.dto.PlaylistResponseDTO;
 @Path("/playlists")
 public class PlaylistController {
     private PlaylistService playlistService;
-
     @Inject
-    public PlaylistController(PlaylistService playlistService) {
+    public PlaylistController(PlaylistService playlistService)
+    {
         this.playlistService = playlistService;
     }
     public PlaylistController() {
@@ -25,12 +25,15 @@ public class PlaylistController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracks() {
+
         PlaylistResponseDTO playlists = playlistService.getPlaylistResponse();
+
         if (playlists == null) {
             return Response.status(400).build();
         } else {
             return Response.status(200).entity(playlists).build();
         }
     }
+
 
 }

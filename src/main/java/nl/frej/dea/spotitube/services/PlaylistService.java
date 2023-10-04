@@ -2,7 +2,7 @@ package nl.frej.dea.spotitube.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import nl.frej.dea.spotitube.dao.Dao;
+import nl.frej.dea.spotitube.dao.PlaylistDaoInterface;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
 import nl.frej.dea.spotitube.services.dto.PlaylistResponseDTO;
 
@@ -11,9 +11,10 @@ import java.util.List;
 @ApplicationScoped
 
 public class PlaylistService {
-    private Dao dao;
+    private PlaylistDaoInterface dao;
+
     @Inject
-    public PlaylistService(Dao<PlaylistDTO> dao) {
+    public PlaylistService(PlaylistDaoInterface dao) {
         this.dao = dao;
     }
 
@@ -22,7 +23,7 @@ public class PlaylistService {
     }
 
     public PlaylistResponseDTO getPlaylistResponse() {
-        List<PlaylistDTO> playlists = dao.findAll();
+        List<PlaylistDTO> playlists = dao.findAll("todo: token");
         if (!playlists.isEmpty()) {
             PlaylistResponseDTO playlistResponseDTO = new PlaylistResponseDTO();
             playlistResponseDTO.setPlaylists(playlists);

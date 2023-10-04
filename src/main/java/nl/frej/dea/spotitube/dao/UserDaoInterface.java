@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface UserDaoInterface extends Dao<UserDTO> {
     Optional<UserDTO> getByUsername(String username);
+
+    void saveTokenToDatabase(String token, String user);
 }

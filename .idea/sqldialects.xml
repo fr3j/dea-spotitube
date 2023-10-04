@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/main/java/nl/frej/dea/spotitube/dao/PlaylistDAO.java" dialect="MySQL" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/63951be5-0508-47af-9c71-b2bdb05344d6/console.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>

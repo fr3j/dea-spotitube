@@ -6,23 +6,31 @@ import nl.frej.dea.spotitube.dao.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @ApplicationScoped
 public class UserService {
     private UserDaoInterface dao;
+    private Map<String, String> tokenToUserMap = new HashMap<>();
+
     @Inject
     public UserService(UserDaoInterface dao) {
         this.dao = dao;
+
     }
 
-    public UserService(){
-        ;
+    public UserService() {
+
     }
 
-    public String login(UserDTO userDTO) {
-        if (checkCredentials(userDTO))
-            return generateToken();
+    public String login(UserDTO userDTO ) {
+        if (checkCredentials(userDTO)) {
+            String token = generateToken();
+            dao.saveTokenToDatabase(token, userDTO.getUser());
+            return token;
+        }
         return null;
     }
 
@@ -45,11 +53,16 @@ public class UserService {
 
     private boolean checkCredentials(UserDTO userDTO) {
         Optional<UserDTO> storedUserOpt = dao.getByUsername(userDTO.getUser());
-        if (storedUserOpt.isPresent()){
+        if (storedUserOpt.isPresent()) {
             UserDTO storedUser = storedUserOpt.get();
             return storedUser.getPassword().equals(userDTO.getPassword());
         }
         return false;
     }
+
+    public Optional<String> getUserFromToken(String token) {
+        return Optional.ofNullable(tokenToUserMap.get(token));
+    }
+
 
 }
