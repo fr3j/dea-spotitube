@@ -98,7 +98,7 @@ public class UserDao implements UserDaoInterface {
         UserDTO user = null;
         try {
             Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
-            PreparedStatement statement = connection.prepareStatement("SELECT * from User WHERE token = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * from user_tokens WHERE token = ?");
             statement.setString(1, token);
 
             ResultSet resultSet = statement.executeQuery();

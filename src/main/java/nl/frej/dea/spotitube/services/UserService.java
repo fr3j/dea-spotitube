@@ -6,14 +6,11 @@ import nl.frej.dea.spotitube.dao.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @ApplicationScoped
 public class UserService {
     private UserDaoInterface dao;
-    private Map<String, String> tokenToUserMap = new HashMap<>();
 
     @Inject
     public UserService(UserDaoInterface dao) {
@@ -59,10 +56,4 @@ public class UserService {
         }
         return false;
     }
-
-    public Optional<String> getUserFromToken(String token) {
-        return Optional.ofNullable(tokenToUserMap.get(token));
-    }
-
-
 }

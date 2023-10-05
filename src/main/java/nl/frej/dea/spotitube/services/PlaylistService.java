@@ -22,8 +22,8 @@ public class PlaylistService {
 
     }
 
-    public PlaylistResponseDTO getPlaylistResponse() {
-        List<PlaylistDTO> playlists = dao.findAll("todo: token");
+    public PlaylistResponseDTO getPlaylistResponse(String token) {
+        List<PlaylistDTO> playlists = dao.findAll(token);
         if (!playlists.isEmpty()) {
             PlaylistResponseDTO playlistResponseDTO = new PlaylistResponseDTO();
             playlistResponseDTO.setPlaylists(playlists);

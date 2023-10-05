@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import nl.frej.dea.spotitube.services.PlaylistService;
@@ -24,9 +25,9 @@ public class PlaylistController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTracks() {
+    public Response getTracks(@QueryParam("token") String token) {
 
-        PlaylistResponseDTO playlists = playlistService.getPlaylistResponse();
+        PlaylistResponseDTO playlists = playlistService.getPlaylistResponse(token);
 
         if (playlists == null) {
             return Response.status(400).build();

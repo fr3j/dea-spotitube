@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import nl.frej.dea.spotitube.services.UserService;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
+import nl.frej.dea.spotitube.services.dto.UserDTO;
 import nl.frej.dea.spotitube.utils.DatabaseProperties;
 
 import java.sql.*;
@@ -18,8 +19,6 @@ import java.util.logging.Logger;
 @ApplicationScoped
 public class PlaylistDaoImpl implements PlaylistDaoInterface {
     private Logger logger = Logger.getLogger(getClass().getName());
-    @Inject
-    private UserService userService;
 
     private DatabaseProperties databaseProperties;
 
@@ -44,7 +43,7 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
 
 
     public List<PlaylistDTO> findAll(String token) {
-        String user = userService.getUserFromToken(token).orElse(null);
+        String user = getUserByToken(token);
 
         List<PlaylistDTO> playlists = new ArrayList<>();
         try {
@@ -57,8 +56,8 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
                 playlist.setId(resultSet.getInt("id"));
                 playlist.setName(resultSet.getString("name"));
 
-                String ownerId = resultSet.getString("Owner");
-                playlist.setOwner(ownerId.equals(user));  // Compare the owner ID to the user
+                String owner = resultSet.getString("Owner");
+                playlist.setOwner(owner.equals(user));
 
                 playlists.add(playlist);
             }
@@ -85,6 +84,53 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     public void delete(PlaylistDTO playlistDTO) {
 
     }
+
+    public Optional<UserDTO> getByToken(String token) {
+        UserDTO user = null;
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("SELECT * from user_tokens WHERE token = ?");
+            statement.setString(1, token);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = new UserDTO();
+                user.setId(resultSet.getInt("id"));
+                user.setUser(resultSet.getString("user"));
+                user.setPassword(resultSet.getString("password"));
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.ofNullable(user);
+    }
+    public String getUserByToken(String token) {
+        String user = null;
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("SELECT * from user_tokens WHERE token = ?");
+            statement.setString(1, token);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = (resultSet.getString("user"));
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
 
 }
 
