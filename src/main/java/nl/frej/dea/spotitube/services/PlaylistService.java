@@ -2,7 +2,8 @@ package nl.frej.dea.spotitube.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import nl.frej.dea.spotitube.dao.PlaylistDaoInterface;
+import nl.frej.dea.spotitube.dao.interfaces.PlaylistDaoInterface;
+import nl.frej.dea.spotitube.dao.interfaces.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
 import nl.frej.dea.spotitube.services.dto.PlaylistResponseDTO;
 
@@ -11,19 +12,24 @@ import java.util.List;
 @ApplicationScoped
 
 public class PlaylistService {
-    private PlaylistDaoInterface dao;
+    @Inject
+    private PlaylistDaoInterface playlistDao;
 
     @Inject
-    public PlaylistService(PlaylistDaoInterface dao) {
-        this.dao = dao;
+    private UserDaoInterface userDao;
+
+    public PlaylistService(PlaylistDaoInterface playlistDao, UserDaoInterface userDao) {
+        this.playlistDao = playlistDao;
+        this.userDao = userDao;
     }
 
-    public PlaylistService(){
-
+    public PlaylistService() {
     }
+
 
     public PlaylistResponseDTO getPlaylistResponse(String token) {
-        List<PlaylistDTO> playlists = dao.findAll(token);
+        String user = userDao.getUserByToken(token);
+        List<PlaylistDTO> playlists = playlistDao.findPlaylists(user);
         if (!playlists.isEmpty()) {
             PlaylistResponseDTO playlistResponseDTO = new PlaylistResponseDTO();
             playlistResponseDTO.setPlaylists(playlists);

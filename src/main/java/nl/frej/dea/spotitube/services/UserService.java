@@ -2,7 +2,7 @@ package nl.frej.dea.spotitube.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import nl.frej.dea.spotitube.dao.UserDaoInterface;
+import nl.frej.dea.spotitube.dao.interfaces.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 
 import java.security.SecureRandom;

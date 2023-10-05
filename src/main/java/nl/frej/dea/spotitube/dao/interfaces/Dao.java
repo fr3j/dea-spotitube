@@ -1,4 +1,4 @@
-package nl.frej.dea.spotitube.dao;
+package nl.frej.dea.spotitube.dao.interfaces;
 
 import java.util.List;
 import java.util.Optional;

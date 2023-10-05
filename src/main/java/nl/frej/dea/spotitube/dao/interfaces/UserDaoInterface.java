@@ -1,4 +1,4 @@
-package nl.frej.dea.spotitube.dao;
+package nl.frej.dea.spotitube.dao.interfaces;
 
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 
@@ -8,4 +8,6 @@ public interface UserDaoInterface extends Dao<UserDTO> {
     Optional<UserDTO> getByUsername(String username);
 
     void saveTokenToDatabase(String token, String user);
+
+    String getUserByToken(String token);
 }

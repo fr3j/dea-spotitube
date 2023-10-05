@@ -2,6 +2,7 @@ package nl.frej.dea.spotitube.dao;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import nl.frej.dea.spotitube.dao.interfaces.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 import nl.frej.dea.spotitube.utils.DatabaseProperties;
 
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
 
 @ApplicationScoped
 
-public class UserDao implements UserDaoInterface {
+public class UserDaoImpl implements UserDaoInterface {
 
     private Logger logger = Logger.getLogger(getClass().getName());
     @Inject
@@ -133,6 +134,28 @@ public class UserDao implements UserDaoInterface {
             // Handle exception
         }
 
+    }
+    @Override
+    public String getUserByToken(String token) {
+        String user = null;
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("SELECT * from user_tokens WHERE token = ?");
+            statement.setString(1, token);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                user = (resultSet.getString("user"));
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
 }

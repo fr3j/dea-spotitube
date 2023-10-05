@@ -2,15 +2,13 @@ package nl.frej.dea.spotitube.dao;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import nl.frej.dea.spotitube.services.UserService;
+import nl.frej.dea.spotitube.dao.interfaces.PlaylistDaoInterface;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
 import nl.frej.dea.spotitube.utils.DatabaseProperties;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -42,8 +40,7 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     }
 
 
-    public List<PlaylistDTO> findAll(String token) {
-        String user = getUserByToken(token);
+    public List<PlaylistDTO> findPlaylists(String user) {
 
         List<PlaylistDTO> playlists = new ArrayList<>();
         try {
@@ -109,27 +106,7 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
 
         return Optional.ofNullable(user);
     }
-    public String getUserByToken(String token) {
-        String user = null;
-        try {
-            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
-            PreparedStatement statement = connection.prepareStatement("SELECT * from user_tokens WHERE token = ?");
-            statement.setString(1, token);
 
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = (resultSet.getString("user"));
-            }
-
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return user;
-    }
 
 
 }

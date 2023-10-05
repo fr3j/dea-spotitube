@@ -1,10 +1,10 @@
-package nl.frej.dea.spotitube.dao;
+package nl.frej.dea.spotitube.dao.interfaces;
 
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
 
 import java.util.List;
 
 public interface PlaylistDaoInterface extends Dao<PlaylistDTO> {
-    public List<PlaylistDTO> findAll(String token);
+    public List<PlaylistDTO> findPlaylists(String token);
 
 }

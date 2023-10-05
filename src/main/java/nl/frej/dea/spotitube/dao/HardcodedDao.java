@@ -1,6 +1,7 @@
 package nl.frej.dea.spotitube.dao;
 
 import jakarta.enterprise.inject.Alternative;
+import nl.frej.dea.spotitube.dao.interfaces.Dao;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
 
 import java.util.ArrayList;
