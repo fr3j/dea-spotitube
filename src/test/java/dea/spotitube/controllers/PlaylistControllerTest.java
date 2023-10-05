@@ -33,7 +33,7 @@ public class PlaylistControllerTest {
         when(playlistService.getPlaylistResponse(token)).thenReturn(playlistResponse);
 
         // Act
-        Response response = playlistController.getTracks(token);
+        Response response = playlistController.getPlaylists(token);
 
         // Assert
         assertEquals(200, response.getStatus());
@@ -47,7 +47,7 @@ public class PlaylistControllerTest {
         when(playlistService.getPlaylistResponse(token)).thenReturn(null);
 
         // Act
-        Response response = playlistController.getTracks(token);
+        Response response = playlistController.getPlaylists(token);
 
         // Assert
         assertEquals(400, response.getStatus());

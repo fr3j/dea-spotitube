@@ -42,4 +42,8 @@ public class PlaylistService {
     }
 
 
+    public void addPlaylist(String token, PlaylistDTO playlistDTO) {
+        String user = userDao.getUserByToken(token);
+        playlistDao.addPlaylist(user, playlistDTO);
+    }
 }

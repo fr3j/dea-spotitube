@@ -80,7 +80,7 @@ public class UserServiceTest {
     @Test
     public void generateToken_generatesCorrectTokenFormat() {
         // Act
-        String token = UserService.generateToken();
+        String token = userService.generateToken();
 
         // Assert
         assertTrue(token.matches("[0-9]{4}-[0-9]{4}-[0-9]{4}"));

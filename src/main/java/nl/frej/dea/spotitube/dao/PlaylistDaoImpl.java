@@ -66,6 +66,27 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
         return playlists;
     }
 
+    @Override
+    public void addPlaylist(String user, PlaylistDTO playlistDTO) {
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Playlist (id, name, Owner) VALUES (?, ?, ?)");
+
+            statement.setInt(1, playlistDTO.getId());
+            statement.setString(2, playlistDTO.getName());
+            statement.setString(3, user);
+
+            statement.executeUpdate();
+
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error communicating with database " + databaseProperties.connectionString(), e);
+        }
+    }
+
+
 
     @Override
     public void save(PlaylistDTO playlistDTO) {
@@ -81,33 +102,6 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     public void delete(PlaylistDTO playlistDTO) {
 
     }
-
-    public Optional<UserDTO> getByToken(String token) {
-        UserDTO user = null;
-        try {
-            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
-            PreparedStatement statement = connection.prepareStatement("SELECT * from user_tokens WHERE token = ?");
-            statement.setString(1, token);
-
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = new UserDTO();
-                user.setId(resultSet.getInt("id"));
-                user.setUser(resultSet.getString("user"));
-                user.setPassword(resultSet.getString("password"));
-            }
-
-            resultSet.close();
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return Optional.ofNullable(user);
-    }
-
-
 
 }
 

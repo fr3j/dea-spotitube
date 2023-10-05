@@ -29,7 +29,6 @@ public class LoginController {
             return Response.status(400).build();
         }
         else {
-
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
             loginResponseDTO.setToken(token);
             loginResponseDTO.setUser(userDTO.getUser());

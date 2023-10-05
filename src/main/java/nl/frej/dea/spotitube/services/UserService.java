@@ -31,7 +31,7 @@ public class UserService {
         return null;
     }
 
-    public static String generateToken() {
+    public String generateToken() {
         SecureRandom secureRandom = new SecureRandom();
         final int TOKEN_SEGMENT_LENGTH = 4;
         final int TOKEN_SEGMENTS = 3;

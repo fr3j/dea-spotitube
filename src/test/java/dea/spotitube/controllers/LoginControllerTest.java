@@ -28,17 +28,15 @@ public class LoginControllerTest {
 
     @Test
     public void login_givenValidCredentials_returnsResponseWithToken() {
-        // Arrange
         UserDTO userDTO = new UserDTO();
         userDTO.setUser("testUser");
         userDTO.setPassword("testPassword");
         String token = "1234-5678-9012";
         when(userService.login(userDTO)).thenReturn(token);
 
-        // Act
+
         Response response = loginController.login(userDTO);
 
-        // Assert
         assertEquals(200, response.getStatus());
         LoginResponseDTO responseBody = (LoginResponseDTO) response.getEntity();
         assertEquals(token, responseBody.getToken());
@@ -47,16 +45,13 @@ public class LoginControllerTest {
 
     @Test
     public void login_givenInvalidCredentials_returnsBadRequestResponse() {
-        // Arrange
         UserDTO userDTO = new UserDTO();
         userDTO.setUser("testUser");
         userDTO.setPassword("wrongPassword");
         when(userService.login(userDTO)).thenReturn(null);
 
-        // Act
         Response response = loginController.login(userDTO);
 
-        // Assert
         assertEquals(400, response.getStatus());
     }
 
