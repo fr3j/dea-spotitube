@@ -1,3 +1,6 @@
+USE SpotiTube;
+
+DROP TABLE IF EXISTS user_tokens;
 CREATE TABLE user_tokens (
                              token VARCHAR(255) PRIMARY KEY,
                              user VARCHAR(255) NOT NULL,

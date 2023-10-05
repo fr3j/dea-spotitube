@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import nl.frej.dea.spotitube.dao.interfaces.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.UserDTO;
+import nl.frej.dea.spotitube.utils.HashingAlgorithm;
 
 import java.security.SecureRandom;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class UserService {
         Optional<UserDTO> storedUserOpt = dao.getByUsername(userDTO.getUser());
         if (storedUserOpt.isPresent()) {
             UserDTO storedUser = storedUserOpt.get();
-            return storedUser.getPassword().equals(userDTO.getPassword());
+            return storedUser.getPassword().equals(HashingAlgorithm.getMd5(userDTO.getPassword()));
         }
         return false;
     }
