@@ -46,4 +46,10 @@ public class PlaylistService {
         String user = userDao.getUserByToken(token);
         playlistDao.addPlaylist(user, playlistDTO);
     }
+
+    public void editPlaylistName(String token, int id, PlaylistDTO playlistDTO) {
+        String user = userDao.getUserByToken(token);
+        String playlistName = playlistDTO.getName();
+        playlistDao.update(id, playlistName, user);
+    }
 }

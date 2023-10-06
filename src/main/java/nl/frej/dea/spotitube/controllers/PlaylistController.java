@@ -41,6 +41,13 @@ public class PlaylistController {
         playlistService.addPlaylist(token, playlistDTO);
         return Response.status(200).entity(playlistService.getPlaylistResponse(token)).build();
     }
+
+    @PUT
+    @Path("/{id}")
+    public Response editPlaylistName(@QueryParam("token") String token, @PathParam("id") int id, PlaylistDTO playlistDTO){
+        playlistService.editPlaylistName(token, id, playlistDTO);
+        return Response.status(200).entity(playlistService.getPlaylistResponse(token)).build();
+    }
 }
 
 

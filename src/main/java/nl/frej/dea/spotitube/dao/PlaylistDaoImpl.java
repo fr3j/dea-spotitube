@@ -4,7 +4,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import nl.frej.dea.spotitube.dao.interfaces.PlaylistDaoInterface;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
-import nl.frej.dea.spotitube.services.dto.UserDTO;
 import nl.frej.dea.spotitube.utils.DatabaseProperties;
 
 import java.sql.*;
@@ -96,6 +95,27 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     @Override
     public void update(PlaylistDTO playlistDTO, String[] params) {
 
+    }
+
+    @Override
+    public void update(int id, String name, String owner){
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("UPDATE Playlist SET id = ?, name = ?, Owner = ? WHERE id = ?");
+
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, owner);
+            statement.setInt(4, id);
+
+            statement.executeUpdate();
+
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error communicating with database " + databaseProperties.connectionString(), e);
+        }
     }
 
     @Override

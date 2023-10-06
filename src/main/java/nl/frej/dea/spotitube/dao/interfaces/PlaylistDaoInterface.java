@@ -1,7 +1,6 @@
 package nl.frej.dea.spotitube.dao.interfaces;
 
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
-import nl.frej.dea.spotitube.services.dto.UserDTO;
 
 import java.util.List;
 
@@ -10,4 +9,5 @@ public interface PlaylistDaoInterface extends Dao<PlaylistDTO> {
 
     void addPlaylist(String token, PlaylistDTO playlistDTO);
 
+    void update(int id, String name, String owner);
 }

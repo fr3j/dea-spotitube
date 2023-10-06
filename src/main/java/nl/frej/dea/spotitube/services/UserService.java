@@ -23,7 +23,7 @@ public class UserService {
 
     }
 
-    public String login(UserDTO userDTO ) {
+    public String login(UserDTO userDTO) {
         if (checkCredentials(userDTO)) {
             String token = generateToken();
             dao.saveTokenToDatabase(token, userDTO.getUser());
