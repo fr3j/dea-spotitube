@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import nl.frej.dea.spotitube.dao.interfaces.PlaylistDaoInterface;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
+import nl.frej.dea.spotitube.services.dto.TrackDTO;
 import nl.frej.dea.spotitube.utils.DatabaseProperties;
 
 import java.sql.*;
@@ -51,10 +52,9 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
                 PlaylistDTO playlist = new PlaylistDTO();
                 playlist.setId(resultSet.getInt("id"));
                 playlist.setName(resultSet.getString("name"));
-
                 String owner = resultSet.getString("Owner");
                 playlist.setOwner(owner.equals(user));
-
+                playlist.setTracks(findTracks(playlist));
                 playlists.add(playlist);
             }
             statement.close();
@@ -122,6 +122,37 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     public void delete(PlaylistDTO playlistDTO) {
 
     }
+
+    public ArrayList<TrackDTO> findTracks(PlaylistDTO playlistDTO) {
+        ArrayList<TrackDTO> tracks = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("SELECT t.id as track_id, t.title, t.performer, t.duration, t.album, t.playcount, t.publicationDate, t.description, t.offlineAvailable FROM Track t JOIN Playlist_Track ptm ON t.id = ptm.trackId WHERE ptm.playlistId = ?");
+            statement.setInt(1, playlistDTO.getId());
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                TrackDTO track = new TrackDTO();
+                track.setId(resultSet.getInt("track_id"));
+                track.setTitle(resultSet.getString("title"));
+                track.setPerformer(resultSet.getString("performer"));
+                track.setDuration(resultSet.getInt("duration"));
+                track.setAlbum(resultSet.getString("album"));
+                track.setPlaycount(resultSet.getInt("playcount"));
+                track.setPublicationDate(resultSet.getTimestamp("publicationDate"));
+                track.setDescription(resultSet.getString("description"));
+                track.setOfflineAvailable(resultSet.getBoolean("offlineAvailable"));
+                tracks.add(track);
+            }
+
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error fetching tracks for playlist " + playlistDTO.getId(), e);
+        }
+        return tracks;
+    }
+
 
 }
 

@@ -2,18 +2,25 @@ package nl.frej.dea.spotitube.services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.NotFoundException;
 import nl.frej.dea.spotitube.dao.interfaces.PlaylistDaoInterface;
+import nl.frej.dea.spotitube.dao.interfaces.TrackDaoInterface;
 import nl.frej.dea.spotitube.dao.interfaces.UserDaoInterface;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
 import nl.frej.dea.spotitube.services.dto.PlaylistResponseDTO;
+import nl.frej.dea.spotitube.services.dto.TrackDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 
 public class PlaylistService {
     @Inject
     private PlaylistDaoInterface playlistDao;
+
+    @Inject
+    private TrackDaoInterface trackDao;
 
     @Inject
     private UserDaoInterface userDao;
@@ -51,5 +58,17 @@ public class PlaylistService {
         String user = userDao.getUserByToken(token);
         String playlistName = playlistDTO.getName();
         playlistDao.update(id, playlistName, user);
+    }
+
+    public void addTrack(String token, int id, TrackDTO trackDTO) {
+        String user = userDao.getUserByToken(token);
+        Optional<PlaylistDTO> optionalPlaylistDTO = playlistDao.get(id);
+        if (optionalPlaylistDTO.isPresent()){
+            PlaylistDTO playlistDTO = optionalPlaylistDTO.get();
+            trackDao.addTrackToPlaylist(trackDTO, playlistDTO);
+        }
+        else {
+            throw new NotFoundException();
+        }
     }
 }

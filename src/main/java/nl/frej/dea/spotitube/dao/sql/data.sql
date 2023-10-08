@@ -33,6 +33,8 @@ CREATE TABLE user_tokens (
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
 INSERT INTO Playlist (id, name, Owner) VALUES (1, 'Electronic playlist 2020', 'frej');
 
 SELECT * FROM User;

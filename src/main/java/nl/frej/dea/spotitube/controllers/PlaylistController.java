@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.Response;
 import nl.frej.dea.spotitube.services.PlaylistService;
 import nl.frej.dea.spotitube.services.dto.PlaylistDTO;
 import nl.frej.dea.spotitube.services.dto.PlaylistResponseDTO;
+import nl.frej.dea.spotitube.services.dto.TrackDTO;
 
 @Path("/playlists")
 public class PlaylistController {
@@ -47,6 +48,13 @@ public class PlaylistController {
     public Response editPlaylistName(@QueryParam("token") String token, @PathParam("id") int id, PlaylistDTO playlistDTO){
         playlistService.editPlaylistName(token, id, playlistDTO);
         return Response.status(200).entity(playlistService.getPlaylistResponse(token)).build();
+    }
+
+    @POST
+    @Path("/{id}/tracks")
+    public Response addTrack(@QueryParam("token") String token, @PathParam("id") int id, TrackDTO trackDTO){
+        playlistService.addTrack(token, id, trackDTO);
+        return null;
     }
 }
 

@@ -7,7 +7,7 @@ public class PlaylistDTO {
     private String name;
     private boolean owner;
     private String user;
-
+    private ArrayList<TrackDTO> tracks = new ArrayList<>();
 
     public String getUser() {
         return user;
@@ -17,7 +17,6 @@ public class PlaylistDTO {
         this.user = user;
     }
 
-    private ArrayList<TrackDTO> tracks = new ArrayList<>();
 
     public PlaylistDTO(){}
 
