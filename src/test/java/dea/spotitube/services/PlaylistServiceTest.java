@@ -36,7 +36,6 @@ public class PlaylistServiceTest {
 
     @Test
     public void getPlaylistResponse_givenTokenWithPlaylists_returnsResponse() {
-        // Arrange
         String token = "sampleToken";
         String user = "sampleUser";
         List<PlaylistDTO> playlists = Arrays.asList(
@@ -46,28 +45,22 @@ public class PlaylistServiceTest {
         when(userDao.getUserByToken(token)).thenReturn(user);
         when(playlistDao.findPlaylists(user)).thenReturn(playlists);
 
-        // Act
         PlaylistResponseDTO result = playlistService.getPlaylistResponse(token);
 
-        // Assert
         assertEquals(3600, result.getLength());
         assertEquals(playlists, result.getPlaylists());
     }
 
     @Test
     public void getPlaylistResponse_givenTokenWithNoPlaylists_returnsNull() {
-        // Arrange
         String token = "sampleToken";
         String user = "sampleUser";
         when(userDao.getUserByToken(token)).thenReturn(user);
         when(playlistDao.findPlaylists(user)).thenReturn(Collections.emptyList());
 
-        // Act
         PlaylistResponseDTO result = playlistService.getPlaylistResponse(token);
 
-        // Assert
         assertNull(result);
     }
 
-    // Add more tests as necessary, e.g., for error cases, etc.
 }

@@ -53,8 +53,8 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
                 playlist.setId(resultSet.getInt("id"));
                 playlist.setName(resultSet.getString("name"));
                 String owner = resultSet.getString("Owner");
-                playlist.setOwner(owner.equals(user));
-                playlist.setTracks(findTracks(playlist));
+                playlist.setOwner(owner != null && owner.equals(user));
+
                 playlists.add(playlist);
             }
             statement.close();
@@ -86,7 +86,6 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     }
 
 
-
     @Override
     public void save(PlaylistDTO playlistDTO) {
 
@@ -98,7 +97,12 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     }
 
     @Override
-    public void update(int id, String name, String owner){
+    public void delete(PlaylistDTO playlistDTO) {
+
+    }
+
+    @Override
+    public void update(int id, String name, String owner) {
         try {
             Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
             PreparedStatement statement = connection.prepareStatement("UPDATE Playlist SET id = ?, name = ?, Owner = ? WHERE id = ?");
@@ -119,9 +123,22 @@ public class PlaylistDaoImpl implements PlaylistDaoInterface {
     }
 
     @Override
-    public void delete(PlaylistDTO playlistDTO) {
+    public void delete(int id) {
+        try {
+            Connection connection = DriverManager.getConnection(databaseProperties.connectionString());
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM Playlist WHERE id = ?");
 
+            statement.setInt(1, id);
+            statement.executeUpdate();
+
+            statement.close();
+            connection.close();
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error deleting playlist with ID " + id + " from database " + databaseProperties.connectionString(), e);
+        }
     }
+
 
     public ArrayList<TrackDTO> findTracks(PlaylistDTO playlistDTO) {
         ArrayList<TrackDTO> tracks = new ArrayList<>();

@@ -27,31 +27,21 @@ public class PlaylistControllerTest {
 
     @Test
     public void getTracks_givenValidToken_returnsResponseWithPlaylists() {
-        // Arrange
         String token = "validToken";
         PlaylistResponseDTO playlistResponse = new PlaylistResponseDTO();
         when(playlistService.getPlaylistResponse(token)).thenReturn(playlistResponse);
 
-        // Act
         Response response = playlistController.getPlaylists(token);
 
-        // Assert
         assertEquals(200, response.getStatus());
         assertEquals(playlistResponse, response.getEntity());
     }
 
     @Test
     public void getTracks_givenInvalidToken_returnsBadRequestResponse() {
-        // Arrange
         String token = "invalidToken";
         when(playlistService.getPlaylistResponse(token)).thenReturn(null);
-
-        // Act
         Response response = playlistController.getPlaylists(token);
-
-        // Assert
         assertEquals(400, response.getStatus());
     }
-
-    // You can add more tests as necessary, such as for null tokens, other edge cases, etc.
 }

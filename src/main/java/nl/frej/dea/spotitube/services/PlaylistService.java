@@ -71,4 +71,21 @@ public class PlaylistService {
             throw new NotFoundException();
         }
     }
+
+    public List<TrackDTO> getTracksForPlaylist(int playlistId, String token) {
+        String user = userDao.getUserByToken(token);
+        Optional<PlaylistDTO> optionalPlaylistDTO = playlistDao.get(playlistId);
+        if (optionalPlaylistDTO.isPresent()){
+            PlaylistDTO playlistDTO = optionalPlaylistDTO.get();
+            return playlistDao.findTracks(playlistDTO);
+        }
+        else {
+            throw new NotFoundException();
+        }
+    }
+
+    public void deletePlaylistName(String token, int id) {
+        String user = userDao.getUserByToken(token);
+        playlistDao.delete(id);
+    }
 }

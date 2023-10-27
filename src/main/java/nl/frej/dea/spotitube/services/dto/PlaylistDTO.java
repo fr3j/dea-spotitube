@@ -6,17 +6,7 @@ public class PlaylistDTO {
     private int id;
     private String name;
     private boolean owner;
-    private String user;
     private ArrayList<TrackDTO> tracks = new ArrayList<>();
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
 
     public PlaylistDTO(){}
 
