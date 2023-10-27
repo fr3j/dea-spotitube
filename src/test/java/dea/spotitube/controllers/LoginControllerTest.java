@@ -55,5 +55,30 @@ public class LoginControllerTest {
         assertEquals(400, response.getStatus());
     }
 
-    // More tests can be added as necessary, such as for null userDTO, other edge cases, etc.
-}
+    @Test
+    public void login_givenNullUserDTO_returnsBadRequestResponse() {
+        Response response = loginController.login(null);
+        assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    public void login_givenEmptyUsername_returnsBadRequestResponse() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUser("");
+        userDTO.setPassword("somePassword");
+        when(userService.login(userDTO)).thenReturn(null);
+
+        Response response = loginController.login(userDTO);
+        assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    public void login_givenEmptyPassword_returnsBadRequestResponse() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUser("testUser");
+        userDTO.setPassword("");
+        when(userService.login(userDTO)).thenReturn(null);
+
+        Response response = loginController.login(userDTO);
+        assertEquals(400, response.getStatus());
+    }}

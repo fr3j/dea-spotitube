@@ -50,6 +50,5 @@ public class UserDaoImplTest {
         verify(preparedStatement).setLong(1, 1);
     }
 
-    // Add similar tests for other methods in UserDaoImpl
 }
 

@@ -29,24 +29,20 @@ public class UserServiceTest {
 
     @Test
     public void login_givenCorrectCredentials_returnsToken() {
-        // Arrange
         UserDTO userDTO = new UserDTO();
         userDTO.setUser("testUser");
         userDTO.setPassword("testPassword");
         when(userDao.getByUsername("testUser")).thenReturn(Optional.of(userDTO));
 
-        // Act
         String token = userService.login(userDTO);
 
-        // Assert
         assertNotNull(token);
-        assertTrue(token.matches("[0-9]{4}-[0-9]{4}-[0-9]{4}")); // Ensuring the token is in the correct format
+        assertTrue(token.matches("[0-9]{4}-[0-9]{4}-[0-9]{4}"));
         verify(userDao).saveTokenToDatabase(token, "testUser");
     }
 
     @Test
     public void login_givenIncorrectCredentials_returnsNull() {
-        // Arrange
         UserDTO userDTO = new UserDTO();
         userDTO.setUser("testUser");
         userDTO.setPassword("wrongPassword");
@@ -55,37 +51,29 @@ public class UserServiceTest {
         storedUserDTO.setPassword("testPassword");
         when(userDao.getByUsername("testUser")).thenReturn(Optional.of(storedUserDTO));
 
-        // Act
         String token = userService.login(userDTO);
 
-        // Assert
         assertNull(token);
     }
 
     @Test
     public void login_givenNonExistentUser_returnsNull() {
-        // Arrange
         UserDTO userDTO = new UserDTO();
         userDTO.setUser("nonExistentUser");
         userDTO.setPassword("somePassword");
         when(userDao.getByUsername("nonExistentUser")).thenReturn(Optional.empty());
 
-        // Act
         String token = userService.login(userDTO);
 
-        // Assert
         assertNull(token);
     }
 
     @Test
     public void generateToken_generatesCorrectTokenFormat() {
-        // Act
         String token = userService.generateToken();
 
-        // Assert
         assertTrue(token.matches("[0-9]{4}-[0-9]{4}-[0-9]{4}"));
     }
 
-    // More tests can be added as necessary.
 }
 
